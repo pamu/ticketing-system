@@ -24,7 +24,10 @@ object Auth extends Controller {
   def loginSubmit = Action { implicit request =>
     loginForm.bindFromRequest().fold(
       hasErrors => BadRequest(views.html.login(hasErrors)(request.flash)),
-      success => Ok(s"${success._1} ${success._2}")
+      success => {
+        Redirect(routes.Application.home()).withSession("email" -> success._1)
+        //Ok(s"${success._1} ${success._2}")
+      }
     )
   }
 

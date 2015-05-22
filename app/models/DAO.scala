@@ -6,5 +6,7 @@ import models.DTO.User
  * Created by pnagarjuna on 22/05/15.
  */
 object DAO {
-  def getUser(email: String): Option[User] = ???
+  def getUser(email: String): Option[User] = DB.db.withSession {implicit sx => {
+    Some(User("", ""))
+  }}
 }
