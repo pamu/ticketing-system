@@ -1,0 +1,3 @@
+error.password_match=Passwords do not match
+error.login_failed=Email or Password is incorrect
+error.signup_failed=Email is taken

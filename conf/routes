@@ -2,6 +2,13 @@
 # This file defines all application routes (Higher priority routes first)
 # ~~~~
 
+# Auth controller
+GET     /login                      controllers.Auth.login()
+POST    /loginSubmit                controllers.Auth.loginSubmit()
+GET     /signup                     controllers.Auth.signup()
+POST    /signupSubmit               controllers.Auth.signupSubmit()
+
+# Application controller
 GET     /                           controllers.Application.index()
 
 # Map static resources from the /public folder to the /assets URL path
