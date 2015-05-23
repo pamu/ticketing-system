@@ -1,4 +1,4 @@
-@(title: String)(content: Html)
+@(title: String)(content: Html)(implicit session: play.api.mvc.Session)
 
 <!DOCTYPE html>
 <html>
@@ -18,6 +18,9 @@
         <div class="navbar-inner">
             <div class="container-fluid">
                 <a id="titleLink" class="brand" href="/">@title</a>
+                @session.get("email").map { message =>
+                    <a id="logout" href="/logout">logout</a>
+                }
             </div>
         </div>
     </div>

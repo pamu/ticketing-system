@@ -10,4 +10,7 @@ object Application extends Controller with Secured {
   def home() = withUser { user => request =>
     Ok(views.html.home())
   }
+  def profile = withUser {user => request =>
+    Ok("")
+  }
 }
