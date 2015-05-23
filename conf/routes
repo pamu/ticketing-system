@@ -10,6 +10,7 @@ POST    /signupSubmit               controllers.Auth.signupSubmit()
 GET     /logout                     controllers.Auth.logout()
 
 # Application controller
+GET     /javascriptRoutes           controllers.Application.javascriptRoutes()
 GET     /                           controllers.Application.index()
 GET     /home                       controllers.Application.home()
 GET     /profile/:email             controllers.Application.profile(email: String)

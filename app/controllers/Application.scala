@@ -1,8 +1,16 @@
 package controllers
 
+import play.api.Routes
 import play.api.mvc.{Action, Controller}
 
 object Application extends Controller with Secured {
+
+  def javascriptRoutes() = Action { implicit request =>
+    import routes.javascript._
+    Ok(Routes.javascriptRouter("jsRoutes")(
+
+    )).as(JAVASCRIPT)
+  }
 
   def index = Action { implicit request =>
     //Ok(views.html.index("Ticketing System"))
