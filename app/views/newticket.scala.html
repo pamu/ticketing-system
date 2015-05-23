@@ -1,8 +1,11 @@
 @()(implicit session: play.api.mvc.Session)
 
 @main("New Ticket"){
+
+    <legend>New Ticket</legend>
+
     <div class="well">
-        <legend>New Ticket</legend>
+
         <div id="new_ticket_msg_center"></div>
 
         <div id="new_ticket">
@@ -20,7 +23,7 @@
 
             <div>
                 <span class="span6">
-                    <label>User Id</label>
+                    <label>Heading</label>
                     <input id="name" type="text" placeholder="Give a nice heading" />
                 </span>
                 <span class="span6">

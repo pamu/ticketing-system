@@ -13,9 +13,19 @@ object DB {
 
   val password = uri.getUserInfo.split(":")(1)
 
+
   lazy val db = Database.forURL(
     driver = "org.postgresql.Driver",
     url = "jdbc:postgresql://" + uri.getHost + ":" + uri.getPort + uri.getPath, user = username,
     password = password
   )
+
+  /**
+  lazy val db = Database.forURL(
+    url = "jdbc:mysql://localhost/demo",
+    driver = "com.mysql.jdbc.Driver",
+    user="root",
+    password="root"
+  )
+    */
 }
