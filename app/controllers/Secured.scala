@@ -13,7 +13,7 @@ import play.api.libs.concurrent.Execution.Implicits.defaultContext
  */
 trait Secured {
   private def email(request: RequestHeader) = request.session.get("email")
-  private def onUnauthorized(request: RequestHeader) = Results.Redirect(routes.Auth.login())
+  private def onUnauthorized(request: RequestHeader) = Results.Redirect(routes.Auth.login()).withNewSession
   def withAuth(f: String => Request[AnyContent] => Result) = Security.Authenticated(email, onUnauthorized) { email =>
     Action.async(request => Future(f(email)(request)))
   }
