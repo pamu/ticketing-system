@@ -7,7 +7,7 @@ import scala.slick.driver.PostgresDriver.simple._
  * Created by pnagarjuna on 22/05/15.
  */
 object DB {
-  val uri = new URI(s"""postgres://pdfadgyjhqnnln:zcDy12Sp9maEenok4V_tTgcAc-@ec2-54-225-154-5.compute-1.amazonaws.com:5432/d2it67fp1ug27a""")
+  val uri = new URI(s"""postgres://qoxdlyackjozvb:KChWyPOvKuLwil7eT4GWDOt7fC@ec2-107-20-178-83.compute-1.amazonaws.com:5432/d6elqbqqchafak""")
 
   val username = uri.getUserInfo.split(":")(0)
 

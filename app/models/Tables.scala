@@ -51,7 +51,7 @@ object Tables {
 
     def customerId = column[Long]("customerId", O.NotNull)
 
-    def assignedId = column[Long]("assignedId", O.NotNull)
+    def assignedToId = column[Long]("assignedId", O.NotNull)
 
     def desc = column[String]("desc", O.NotNull)
 
@@ -61,9 +61,14 @@ object Tables {
 
     def id = column[Long]("id", O.PrimaryKey, O.NotNull)
 
-    def * = (customerId, desc, authorId, assignedId, status, timestamp, id.?) <> (Ticket.tupled, Ticket.unapply)
+    def * = (customerId, desc, authorId, assignedToId, status, timestamp, id.?) <> (Ticket.tupled, Ticket.unapply)
 
-    //now foreign keys
+    def authorIdFK = foreignKey("tickets_author_id_fk", authorId, TableQuery[Users])(_.id, ForeignKeyAction.Cascade)
+
+    def customerIdFK = foreignKey("tickets_customer_id_fk", customerId, TableQuery[Customers])(_.id, ForeignKeyAction.Cascade, ForeignKeyAction.Cascade)
+
+    def assignedToIdFK = foreignKey("tickets_assigned_to_id_fk", assignedToId, TableQuery[Users])(_.id, ForeignKeyAction.Cascade, ForeignKeyAction.Cascade)
+
   }
 
   val commentTable = "comments"
@@ -82,6 +87,17 @@ object Tables {
 
     def * = (commenterId, ticketId, comment, timestamp, id.?) <> (Comment.tupled, Comment.unapply)
 
-    //now foriegn keys
+    def commenterIdFK = foreignKey("comments_commenter_id_fk", commenterId, TableQuery[Users])(_.id, ForeignKeyAction.Cascade, ForeignKeyAction.Cascade)
+
+    def ticketIdFK = foreignKey("comments_ticket_id_fk", ticketId, TableQuery[Users])(_.id, ForeignKeyAction.Cascade, ForeignKeyAction.Cascade)
   }
+
+  val users = TableQuery[Users]
+
+  val customers = TableQuery[Customers]
+
+  val tickets = TableQuery[Tickets]
+
+  val comments = TableQuery[Comments]
+
 }
