@@ -18,8 +18,9 @@
         <div class="navbar-inner">
             <div class="container-fluid">
                 <a id="titleLink" class="brand" href="/">@title</a>
-                @session.get("email").map { message =>
-                    <a id="logout" href="/logout">logout</a>
+                @session.get("email").map { email =>
+                    <li ><a href="/user/@x"><i class="icon-user"></i>@email</a></li>
+                    <li ><a href="/logout"><i class="icon-off"></i>logout</a></li>
                 }
             </div>
         </div>

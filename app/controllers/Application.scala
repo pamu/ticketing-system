@@ -7,7 +7,7 @@ object Application extends Controller with Secured {
     //Ok(views.html.index("Ticketing System"))
     Redirect(routes.Auth.login())
   }
-  def home() = withUser { user => request =>
+  def home() = withUser { user => implicit request =>
     Ok(views.html.home())
   }
   def profile = withUser {user => request =>
