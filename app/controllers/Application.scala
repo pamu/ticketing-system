@@ -30,7 +30,7 @@ object Application extends Controller with Secured {
   }
 
   def newticket() = withAsyncUser(parse.json) { user => implicit request =>
-    Future(Ok(""))
+    Future(Ok(views.html.newticket()))
   }
 
   def newticketSubmit() = withAsyncUser(parse.json) { user => implicit request =>
