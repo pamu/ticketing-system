@@ -3,7 +3,7 @@ package controllers
 import play.api.mvc.{Action, Controller}
 
 object Application extends Controller with Secured {
-  def index = Action {
+  def index = Action { implicit request =>
     //Ok(views.html.index("Ticketing System"))
     Redirect(routes.Auth.login())
   }
