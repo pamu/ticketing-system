@@ -25,7 +25,7 @@ object Auth extends Controller {
   )
 
   def login = Action { implicit request =>
-    Ok(views.html.login(loginForm)(request.flash))
+    request.session.get("email").map(email => Redirect(routes.Application.home)).getOrElse(Ok(views.html.login(loginForm)(request.flash)))
   }
 
   def loginSubmit = Action { implicit request =>
@@ -51,7 +51,7 @@ object Auth extends Controller {
   )
 
   def signup = Action { implicit request =>
-    Ok(views.html.signup(signupForm)(request.flash))
+    request.session.get("email").map(email => Redirect(routes.Application.home)).getOrElse(Ok(views.html.signup(signupForm)(request.flash)))
   }
 
   def signupSubmit = Action.async { implicit request =>
@@ -66,6 +66,10 @@ object Auth extends Controller {
         Future(Redirect(routes.Auth.login).flashing("success" -> "Signup successful."))
       }
     )
+  }
+
+  def logout() = Action { implicit request =>
+    Redirect(routes.Application.login).flashing("success" -> "logged out.")
   }
 
 }
