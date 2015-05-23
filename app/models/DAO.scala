@@ -4,6 +4,7 @@ import java.sql.Timestamp
 import java.util.Date
 
 import models.DTO.User
+import play.api.Logger
 
 import scala.slick.jdbc.meta.MTable
 
@@ -34,7 +35,7 @@ object DAO {
       Tables.tickets.ddl.drop
       Tables.customers.ddl.drop
       Tables.users.ddl.drop
-    } catch {case _: Exception => }
+    } catch {case ex: Exception => Logger.info(s"reason: ${ex.getMessage}")}
   }}
 
   def getUser(email: String): Option[User] = DB.db.withSession {implicit sx => {

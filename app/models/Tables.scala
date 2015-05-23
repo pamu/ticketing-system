@@ -21,7 +21,7 @@ object Tables {
 
     def id = column[Long]("id", O.PrimaryKey, O.AutoInc)
 
-    def * = (email, password, id.?) <>(User.tupled, User.unapply)
+    def * = (email, password, timestamp,  id.?) <>(User.tupled, User.unapply)
 
   }
 
@@ -61,7 +61,7 @@ object Tables {
 
     def id = column[Long]("id", O.PrimaryKey, O.NotNull)
 
-    def * = (customerId, desc, authorId, assignedToId, status, timestamp, id.?) <> (Ticket.tupled, Ticket.unapply)
+    def * = (authorId, customerId, assignedToId, desc, status, timestamp, id.?) <> (Ticket.tupled, Ticket.unapply)
 
     def authorIdFK = foreignKey("tickets_author_id_fk", authorId, TableQuery[Users])(_.id, ForeignKeyAction.Cascade)
 
