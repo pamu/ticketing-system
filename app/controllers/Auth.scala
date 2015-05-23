@@ -1,9 +1,14 @@
 package controllers
 
+import models.DAO
 import play.api.data.Form
 import play.api.mvc.{Action, Controller}
 
 import play.api.data.Forms._
+
+import play.api.libs.concurrent.Execution.Implicits.defaultContext
+
+import scala.concurrent.Future
 
 /**
  * Created by pnagarjuna on 22/05/15.
@@ -14,7 +19,9 @@ object Auth extends Controller {
     tuple(
       "email" -> email,
       "password" -> nonEmptyText(minLength = 6, maxLength = 25)
-    ).verifying("error.login_failed", data => true)
+    ).verifying("error.login_failed", data => {
+      scala.concurrent.blocking(DAO.auth(data._1, data._2))
+    })
   )
 
   def login = Action { implicit request =>
@@ -26,7 +33,6 @@ object Auth extends Controller {
       hasErrors => BadRequest(views.html.login(hasErrors)(request.flash)),
       success => {
         Redirect(routes.Application.home()).withSession("email" -> success._1)
-        //Ok(s"${success._1} ${success._2}")
       }
     )
   }
@@ -41,17 +47,25 @@ object Auth extends Controller {
     ).verifying("error.password_match", data => {
       val pws = data._2
       pws._1 == pws._2
-    }).verifying("error.signup_failed", data => true)
+    }).verifying("error.signup_failed", data => ! DAO.exists(data._1))
   )
 
   def signup = Action { implicit request =>
     Ok(views.html.signup(signupForm)(request.flash))
   }
 
-  def signupSubmit = Action { implicit request =>
+  def signupSubmit = Action.async { implicit request =>
     signupForm.bindFromRequest().fold(
-      hasErrors => BadRequest(views.html.signup(hasErrors)(request.flash)),
-      success => Ok(s"${success._1} ${success._2}")
+      hasErrors => Future(BadRequest(views.html.signup(hasErrors)(request.flash))),
+      success => {
+        val email = success._1
+        val password = success._2._1
+        scala.concurrent.blocking {
+          DAO.createUser(email, password)
+        }
+        Future(Redirect(routes.Auth.login).flashing("success" -> "Signup successful."))
+      }
     )
   }
+
 }

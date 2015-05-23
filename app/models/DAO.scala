@@ -39,6 +39,25 @@ object DAO {
   }}
 
   def getUser(email: String): Option[User] = DB.db.withSession {implicit sx => {
-    Some(User("", "", new Timestamp(new Date().getTime)))
+    import Tables._
+    val q = for(user <- users.filter(_.email === email)) yield user
+    q.firstOption
+  }}
+
+  def exists(email: String): Boolean = DB.db.withSession {implicit sx => {
+    import Tables._
+    val q = for(user <- users.filter(_.email === email)) yield user
+    q.exists.run
+  }}
+
+  def auth(email: String, password: String): Boolean = DB.db.withSession {implicit sx => {
+    import Tables._
+    val q = for(user <- users.filter(_.email === email).filter(_.password === password)) yield user
+    q.exists.run
+  }}
+
+  def createUser(email: String, password: String) = DB.db.withSession {implicit sx => {
+    import Tables._
+    users += User(email, password, new Timestamp(new Date().getTime))
   }}
 }
