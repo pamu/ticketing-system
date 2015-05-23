@@ -1,8 +1,11 @@
 package controllers
 
 import play.api.Routes
-import play.api.data.Form
 import play.api.mvc.{Action, Controller}
+
+import scala.concurrent.Future
+
+import play.api.libs.concurrent.Execution.Implicits.defaultContext
 
 object Application extends Controller with Secured {
 
@@ -15,7 +18,7 @@ object Application extends Controller with Secured {
 
   def index = Action { implicit request =>
     //Ok(views.html.index("Ticketing System"))
-    Redirect(routes.Auth.login())
+    Redirect(routes.Application.home)
   }
 
   def home() = withUser { user => implicit request =>
@@ -26,12 +29,12 @@ object Application extends Controller with Secured {
     Ok(views.html.profile())
   }
 
-  def newticket() = withUser { user => implicit request =>
-    Ok("")
+  def newticket() = withAsyncUser(parse.json) { user => implicit request =>
+    Future(Ok(""))
   }
 
-  def newticketSubmit() = withUser { user => implicit request =>
-    Ok("")
+  def newticketSubmit() = withAsyncUser(parse.json) { user => implicit request =>
+    Future(Ok(""))
   }
 
 }
