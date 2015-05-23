@@ -18,10 +18,12 @@
         <div class="navbar-inner">
             <div class="container-fluid">
                 <a id="titleLink" class="brand" href="/">@title</a>
-                @session.get("email").map { email =>
-                    <li ><a href="/user/@email"><i class="icon-user"></i>@email</a></li>
-                    <li ><a href="/logout"><i class="icon-off"></i>logout</a></li>
-                }
+                <ul class="nav">
+                    @session.get("email").map { email =>
+                        <li ><a href="/user/@email"><i class="icon-user"></i>@email</a></li>
+                        <li ><a href="/logout"><i class="icon-off"></i>logout</a></li>
+                    }
+                </ul>
             </div>
         </div>
     </div>
