@@ -1,6 +1,7 @@
 package controllers
 
 import play.api.Routes
+import play.api.data.Form
 import play.api.mvc.{Action, Controller}
 
 object Application extends Controller with Secured {
@@ -23,6 +24,14 @@ object Application extends Controller with Secured {
 
   def profile(email: String) = withUser { user => implicit request =>
     Ok(views.html.profile())
+  }
+
+  def newticket() = withUser { user => implicit request =>
+    Ok("")
+  }
+
+  def newticketSubmit() = withUser { user => implicit request =>
+    Ok("")
   }
 
 }
