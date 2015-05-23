@@ -10,7 +10,7 @@ object Global extends GlobalSettings {
   override def onStart(app: Application): Unit = {
     super.onStart(app)
     Logger.info("Ticket System started ...")
-    DAO.clean
+    //DAO.clean
     DAO.init
   }
   override def onStop(app: Application): Unit = {
