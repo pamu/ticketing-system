@@ -13,4 +13,8 @@ object Application extends Controller with Secured {
     Ok(views.html.home())
   }
 
+  def profile(email: String) = withUser { user => implicit request =>
+    Ok(views.html.profile())
+  }
+
 }
