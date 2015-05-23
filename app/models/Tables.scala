@@ -51,7 +51,7 @@ object Tables {
 
     def customerId = column[Long]("customerId", O.NotNull)
 
-    def assignedToId = column[Long]("assignedId", O.NotNull)
+    def assignedToId = column[Long]("assignedId", O.Nullable)
 
     def desc = column[String]("desc", O.NotNull)
 
