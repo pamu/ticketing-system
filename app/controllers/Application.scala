@@ -1,7 +1,7 @@
 package controllers
 
-import play.api.Routes
-import play.api.libs.json.{JsPath, Reads}
+import play.api.{Logger, Routes}
+import play.api.libs.json._
 import play.api.mvc.{Action, Controller}
 
 import scala.concurrent.Future
@@ -47,7 +47,14 @@ object Application extends Controller with Secured {
   }
 
   def newticketSubmit() = withAsyncUser(parse.json) { user => implicit request =>
-    Future(Ok(""))
+    request.body.validate[TicketInfo] match {
+      case success: JsSuccess[TicketInfo] => {
+        val data = success.get
+        Logger.info(data.toString)
+        Future(Ok(Json.obj("success" -> "submitted")))
+      }
+      case error: JsError => Future(Ok(Json.obj("failure" -> JsError.toFlatJson(error))))
+    }
   }
 
 }
