@@ -1,5 +1,9 @@
 package controllers
 
+import java.sql.Timestamp
+
+import models.DAO
+import models.DTO.Ticket
 import play.api.{Logger, Routes}
 import play.api.libs.json._
 import play.api.mvc.{Action, Controller}
@@ -51,9 +55,37 @@ object Application extends Controller with Secured {
       case success: JsSuccess[TicketInfo] => {
         val data = success.get
         Logger.info(data.toString)
-        Future(Ok(Json.obj("success" -> "submitted")))
+        scala.concurrent.blocking {
+          if (DAO.customerExists(data.userId)) {
+            data.assignedToId match {
+              case Some(id) => {
+                if (DAO.userExists(id)) {
+                    //store
+                  import java.util.Date
+                  val ticket = Ticket(user.id.get, data.userId, Some(data.assignedToId.get), data.heading, data.desc,
+                    2, new Timestamp(new Date().getTime))
+                  DAO.saveTicket(ticket)
+                  Future(Ok(Json.obj("success" -> "ticket opened")))
+                } else {
+                  Future(Ok(Json.obj("failure" -> "User id(assignedToId) does not exists")))
+                }
+              }
+              case None => {
+                  //store
+                import java.util.Date
+                val ticket = Ticket(user.id.get, data.userId, None, data.heading, data.desc,
+                  1, new Timestamp(new Date().getTime))
+                DAO.saveTicket(ticket)
+                Future(Ok(Json.obj("success" -> "new ticket")))
+              }
+            }
+          } else {
+            Future(Ok(Json.obj("failure" -> "Customer id does not exist")))
+          }
+        }
+        //Future(Ok(Json.obj("success" -> "submitted")))
       }
-      case error: JsError => Future(Ok(Json.obj("failure" -> JsError.toFlatJson(error))))
+      case error: JsError => Future(Ok(Json.obj("errors" -> JsError.toFlatJson(error))))
     }
   }
 
