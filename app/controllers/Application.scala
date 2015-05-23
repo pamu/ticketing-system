@@ -29,8 +29,8 @@ object Application extends Controller with Secured {
     Ok(views.html.profile())
   }
 
-  def newticket() = withAsyncUser(parse.json) { user => implicit request =>
-    Future(Ok(views.html.newticket()))
+  def newticket() = withUser { user => implicit request =>
+    Ok(views.html.newticket())
   }
 
   def newticketSubmit() = withAsyncUser(parse.json) { user => implicit request =>

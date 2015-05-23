@@ -9,9 +9,9 @@ object DTO {
 
   case class User(email: String, password: String, timestamp: Timestamp, id: Option[Long] = None)
 
-  case class Customer(username: String, email: String, address: String, timestamp: Timestamp, id: Option[Long] = None)
+  case class Customer(email: String, timestamp: Timestamp, id: Option[Long] = None)
 
-  case class Ticket( authorId: Long, customerId: Long, assignedTo: Long, desc: String, status: Int,
+  case class Ticket( authorId: Long, customerId: Long, assignedTo: Long, name: String, desc: String, status: Int,
                     timestamp: Timestamp, id: Option[Long] = None)
 
   case class Comment(commenterId: Long, ticketId: Long, comment: String, timestamp: Timestamp, id: Option[Long] = None)

@@ -29,17 +29,13 @@ object Tables {
 
   class Customers(tag: Tag) extends Table[Customer](tag, customerTable) {
 
-    def username = column[String]("username", O.NotNull)
-
     def email = column[String]("email", O.NotNull)
-
-    def address = column[String]("address", O.NotNull)
 
     def timestamp = column[Timestamp]("timestamp", O.NotNull)
 
     def id = column[Long]("id", O.PrimaryKey, O.AutoInc)
 
-    def * = (username, email, address, timestamp, id.?) <> (Customer.tupled, Customer.unapply)
+    def * = (email, timestamp, id.?) <> (Customer.tupled, Customer.unapply)
 
   }
 
@@ -53,6 +49,8 @@ object Tables {
 
     def assignedToId = column[Long]("assignedId", O.Nullable)
 
+    def name = column[String]("name", O.NotNull)
+
     def desc = column[String]("desc", O.NotNull)
 
     def status = column[Int]("status", O.NotNull)
@@ -61,7 +59,7 @@ object Tables {
 
     def id = column[Long]("id", O.PrimaryKey, O.NotNull)
 
-    def * = (authorId, customerId, assignedToId, desc, status, timestamp, id.?) <> (Ticket.tupled, Ticket.unapply)
+    def * = (authorId, customerId, assignedToId, name, desc, status, timestamp, id.?) <> (Ticket.tupled, Ticket.unapply)
 
     def authorIdFK = foreignKey("tickets_author_id_fk", authorId, TableQuery[Users])(_.id, ForeignKeyAction.Cascade)
 

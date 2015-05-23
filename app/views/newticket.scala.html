@@ -3,10 +3,56 @@
 @main("New Ticket"){
     <div class="well">
         <legend>New Ticket</legend>
+        <div id="new_ticket_msg_center"></div>
+
         <div id="new_ticket">
-            <label>Label name</label>
-            <input type="text" placeholder="Type something…">
-            <button class="btn btn-default">Submit</button>
+
+
+            <div>
+                <span class="span6">
+                    <label>User Id</label>
+                    <input id="user_id" type="text" placeholder="Enter Valid User Id" />
+                </span>
+                <span class="span6">
+                    <div id="user_id_msg"></div>
+                </span>
+            </div>
+
+            <div>
+                <span class="span6">
+                    <label>User Id</label>
+                    <input id="name" type="text" placeholder="Give a nice heading" />
+                </span>
+                <span class="span6">
+                    <div id="name_msg"></div>
+                </span>
+            </div>
+
+
+            <div>
+                <span class="span6">
+                    <label>Desc</label>
+                    <input id="desc" type="text" placeholder="Describe the problem" />
+                </span>
+                <span class="span6">
+                    <div id="desc_msg"></div>
+                </span>
+            </div>
+
+
+            <div>
+                <span class="span6">
+                    <label>AssignTo</label>
+                    <input id="assignToId" type="text" placeholder="Enter Valid Id" />
+                </span>
+                <span class="span6">
+                    <div id="assignToId_msg"></div>
+                </span>
+            </div>
+
+            <button id="new_ticket_submit" class="btn btn-default">Submit</button>
+
         </div>
+
     </div>
 }
