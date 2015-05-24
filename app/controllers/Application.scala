@@ -22,7 +22,9 @@ object Application extends Controller with Secured {
       controllers.routes.javascript.Application.editableTicket,
       controllers.routes.javascript.Application.editticketSubmit,
       controllers.routes.javascript.Application.listTickets,
-      controllers.routes.javascript.Application.closeTicket
+      controllers.routes.javascript.Application.closeTicket,
+      controllers.routes.javascript.Application.comment,
+      controllers.routes.javascript.Application.listComments
     )).as(JAVASCRIPT)
   }
 
@@ -186,6 +188,40 @@ object Application extends Controller with Secured {
   }}
 
   def ticket(ticketId: Long) = withUser { user => implicit request => {
-    Ok(views.html.ticket())
+    scala.concurrent.blocking {
+      DAO.getAnyTicket(ticketId).map(tuple => Ok(views.html.ticket(tuple))).getOrElse(NotFound)
+    }
+  }}
+
+  case class CommentInfo(ticketId: Long, comment: String)
+  implicit val commentInfoReads: Reads[CommentInfo] = (
+    (JsPath \ "ticketId").read[Long] and
+    (JsPath \ "comment").read[String]
+    )(CommentInfo.apply _)
+
+  def comment() = withAsyncUser(parse.json) {user => implicit request => {
+    Future {
+      request.body.validate[CommentInfo] match {
+        case success: JsSuccess[CommentInfo] => {
+          val data = success.get
+          scala.concurrent.blocking {
+            if (DAO.ticketExists(data.ticketId)) {
+              val status = DAO.saveComment(user.id.get, data)
+              if (status > 0) Ok(Json.obj("success" -> "comment successfully posted.")) else
+                Ok(Json.obj("failure" -> "error posting comment"))
+            } else {
+              Ok(Json.obj("failure" -> "Ticket does not exist."))
+            }
+          }
+        }
+        case error: JsError => {
+          Ok(Json.obj("errors" -> JsError.toFlatJson(error)))
+        }
+      }
+    }
+  }}
+
+  def listComments(ticketId: Long, page: Int) = withUser {user => implicit request => {
+    Ok("")
   }}
 }

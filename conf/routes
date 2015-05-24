@@ -22,6 +22,8 @@ GET     /editableTicket             controllers.Application.editableTicket(ticke
 GET     /listtickets                controllers.Application.listTickets(page: Int)
 GET     /closeticket                controllers.Application.closeTicket(ticketId: Long)
 GET     /ticket/:ticketId           controllers.Application.ticket(ticketId: Long)
+POST    /comment                    controllers.Application.comment()
+GET     /listcomments               controllers.Application.listComments(ticketId: Long, page: Int)
 
 
 # Map static resources from the /public folder to the /assets URL path

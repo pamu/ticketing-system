@@ -3,8 +3,8 @@ package models
 import java.sql.Timestamp
 import java.util.Date
 
-import controllers.Application.{TicketInfoWithId, TicketInfo}
-import models.DTO.{Customer, Ticket, User}
+import controllers.Application.{CommentInfo, TicketInfoWithId, TicketInfo}
+import models.DTO.{Comment, Customer, Ticket, User}
 import play.api.Logger
 
 import scala.slick.jdbc.meta.MTable
@@ -127,8 +127,25 @@ object DAO {
     q.firstOption
   }}
 
+  def getAnyTicket(ticketId: Long): Option[(String, String, String, Int, Long, String)] = DB.db.withSession {implicit sx => {
+    import Tables._
+    val q = for(((ticket, user), customer) <- tickets.filter(_.id === ticketId).innerJoin(users).on(_.authorId === _.id)
+      .innerJoin(customers).on(_._1.customerId === _.id)) yield (user.email, ticket.name, ticket.desc, ticket.status,
+      ticket.id, customer.email)
+    q.firstOption
+  }}
+
   def closeTicket(id: Long): Int = DB.db.withSession{ implicit sx => {
     val q = for(ticket <- Tables.tickets.filter(_.id === id).filter(_.status > 1)) yield ticket.status
     q.update(3)
+  }}
+
+  def ticketExists(ticketId: Long): Boolean = DB.db.withSession {implicit sx => {
+    val q = for(ticket <- Tables.tickets.filter(_.id === ticketId)) yield ticket
+    q.exists.run
+  }}
+
+  def saveComment(commenterId: Long, data: CommentInfo) = DB.db.withSession {implicit sx => {
+    Tables.comments += Comment(commenterId, data.ticketId, data.comment, new Timestamp(new Date().getTime))
   }}
 }
