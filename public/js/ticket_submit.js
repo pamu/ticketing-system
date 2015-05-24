@@ -24,25 +24,7 @@ function ticketPost() {
                                 }
                                 post(json);
                             }
-                            function post(json) {
-                                console.log(json);
-                                jsRoutes.controllers.Application.newticketSubmit().ajax({
-                                    data: JSON.stringify(json),
-                                    contentType: "application/json",
-                                    success: function(data) {
-                                        if (data.success) {
-                                            $("#new_ticket").html('<span class="alert alert-info">Ticket Submitted Successfully</span>')
-                                            $("#msg_center").html('<center><span class="alert alert-success">' + data.success + ' added</span></center>')
-                                        }
-                                        if (data.failure) {
-                                            $("#msg_center").html('<span class="alert alert-error">' + JSON.stringify(data.failure) + '</span>')
-                                        }
-                                        if (data.errors) {
-                                            $("#msg_center").html('<span class="alert alert-error">' + JSON.stringify(data.errors)+ '</span>')
-                                        }
-                                    }
-                                });
-                            }
+
 
                         } else {
                             $("#msg_center").html('<span class="alert alert-error">Enter valid Desc<span>')
@@ -57,3 +39,23 @@ function ticketPost() {
                     return;
                 }
     }
+
+    function post(json) {
+                                    console.log(json);
+                                    jsRoutes.controllers.Application.newticketSubmit().ajax({
+                                        data: JSON.stringify(json),
+                                        contentType: "application/json",
+                                        success: function(data) {
+                                            if (data.success) {
+                                                $("#new_ticket").html('<span class="alert alert-info">Ticket Submitted Successfully</span>')
+                                                $("#msg_center").html('<center><span class="alert alert-success">' + data.success + ' added</span></center>')
+                                            }
+                                            if (data.failure) {
+                                                $("#msg_center").html('<span class="alert alert-error">' + JSON.stringify(data.failure) + '</span>')
+                                            }
+                                            if (data.errors) {
+                                                $("#msg_center").html('<span class="alert alert-error">' + JSON.stringify(data.errors)+ '</span>')
+                                            }
+                                        }
+                                    });
+                                }
