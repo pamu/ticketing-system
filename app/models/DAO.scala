@@ -3,6 +3,7 @@ package models
 import java.sql.Timestamp
 import java.util.Date
 
+import controllers.Application.{TicketInfoWithId, TicketInfo}
 import models.DTO.{Customer, Ticket, User}
 import play.api.Logger
 
@@ -83,10 +84,31 @@ object DAO {
     Tables.tickets += ticket
   }}
 
+
+  def updateTicket(ticketInfoWithId: TicketInfoWithId) = DB.db.withSession {implicit sx => {
+    import Tables._
+    val q = for(ticket <- tickets.filter(_.id === ticketInfoWithId.ticketId)) yield ticket
+    q.firstOption.map(ticket => {
+      val status = ticketInfoWithId.assignedToId match {
+        case Some(id) => 2
+        case None => 1
+      }
+      val newTicket = Ticket(ticket.authorId, ticketInfoWithId.customerId, ticketInfoWithId.assignedToId,
+        ticketInfoWithId.heading, ticketInfoWithId.desc, status, ticket.timestamp, ticket.id)
+      q.update(newTicket)
+    })
+  }}
+
   def addCustomers = DB.db.withSession {implicit sx => {
     for(i <- 1 to 10) {
       val customer = Customer(s"person$i@gmail.com", new Timestamp(new Date().getTime))
       Tables.customers += customer
     }
+  }}
+
+  def getTicket(ticketId: Long) = DB.db.withSession {implicit sx => {
+    import Tables._
+    val q = for(ticket <- tickets.filter(_.id === ticketId)) yield ticket
+    q.firstOption
   }}
 }

@@ -60,7 +60,7 @@ object Tables {
 
     def id = column[Long]("id", O.PrimaryKey, O.AutoInc)
 
-    def * = (authorId, customerId, assignedToId.?, name, desc, status, timestamp, id.?) <> (Ticket.tupled, Ticket.unapply)
+    def * = (authorId, customerId, assignedToId.?, name, desc, status, timestamp, id.?) <> ((Ticket.apply _).tupled, Ticket.unapply)
 
     def authorIdFK = foreignKey("tickets_author_id_fk", authorId, TableQuery[Users])(_.id, ForeignKeyAction.Cascade)
 

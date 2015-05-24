@@ -1,4 +1,70 @@
-@()(implicit session: play.api.mvc.Session)
+@(ticketId: Long)(implicit session: play.api.mvc.Session)
 
-@main(""){
+@main("Edit Ticket"){
+
+<legend>Edit Ticket</legend>
+
+<div class="well">
+
+    <div id="msg_center"></div>
+    <br/>
+    <div id="new_ticket">
+
+        <label>Customer Id</label>
+        <div class="row-fluid">
+                <span class="span6">
+                    <input id="customer_id" type="text" placeholder="Enter Valid Customer Id" />
+                </span>
+        </div>
+
+        <label>Heading</label>
+        <div class="row-fluid">
+                <span class="span6">
+                    <input id="heading" type="text" placeholder="Give a nice heading" />
+                </span>
+        </div>
+
+        <label>Desc</label>
+        <div class="row-fluid">
+                <span class="span6">
+                    <textarea id="desc" type="text" placeholder="Describe the problem"></textarea>
+                </span>
+        </div>
+
+        <label>AssignTo (Optional)</label>
+        <div class="row-fluid">
+                <span class="span6">
+                    <input id="assignedToId" type="text" placeholder="Enter Valid Id" />
+                </span>
+        </div>
+
+        <button class="btn btn-default" onclick="updateTicket(@ticketId);">Submit</button>
+
+    </div>
+
+</div>
+    <script type="text/javascript">
+        jsRoutes.controllers.Application.editableTicket(@ticketId).ajax({
+            success: function(data) {
+                if (data.success) {
+                    console.log(data);
+                    console.log(data.success.assignedToId)
+                    console.log(data.success.desc);
+                    $("#customer_id").val(''+data.success.customerId);
+                    $("#heading").val(''+data.success.heading);
+                    $("#desc").val(''+data.success.desc);
+                    var something = parseInt(data.success.assignedToId);
+                    if (! isNaN(something)) {
+                        $("#assignedToId").val(''+data.success.assignedToId);
+                    } else {
+                        $("#assignedToId").val('');
+                    }
+                }
+
+                if (data.failure) {
+                    $("#new_ticket").html('<span class="alert alert-error">' + data.failure + '</span>');
+                }
+            }
+        });
+    </script>
 }

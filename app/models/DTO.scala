@@ -11,7 +11,7 @@ object DTO {
 
   case class Customer(email: String, timestamp: Timestamp, id: Option[Long] = None)
 
-  case class Ticket( authorId: Long, customerId: Long, assignedTo: Option[Long], name: String, desc: String, status: Int,
+  case class Ticket(authorId: Long, customerId: Long, assignedTo: Option[Long], name: String, desc: String, status: Int,
                     timestamp: Timestamp, id: Option[Long] = None)
 
   case class Comment(commenterId: Long, ticketId: Long, comment: String, timestamp: Timestamp, id: Option[Long] = None)
