@@ -1,7 +1,55 @@
 @()(implicit session: play.api.mvc.Session)
 
 @main("Home"){
-    <div class="well">
-        Home
+    <div id="msg_center" class="well span12"></div>
+    <div class="well span12">
+        <div class="row">
+            <span id="tickets" class="span12">
+                <table id="ticketsTable" class="table table-bordered">
+                    <caption>Tickets</caption>
+                    <thead>
+                    <tr>
+                        <th>Ticket ID</th>
+                        <th>Heading</th>
+                        <th>Desc</th>
+                        <th>Customer Email</th>
+                        <th>Author Email</th>
+                        <th>Status</th>
+                        <th>Edit</th>
+                        <th>Action</th>
+                    </tr>
+                    </thead>
+                    <tbody id="table_body">
+                        <tr>
+                            <th>1</th>
+                            <th>Hello</th>
+                            <th>hello</th>
+                            <th>email</th>
+                            <th>email</th>
+                            <th>status</th>
+                            <th><button class="btn btn-default">Edit</button></th>
+                            <th>close</th>
+                        </tr>
+                    </tbody>
+                </table>
+            </span>
+        </div>
+        <button class="btn btn-default" onclick="prev();">prev</button>
+        <button class="pull-right btn btn-default" onclick="next();">next</button>
     </div>
+    <script type="text/javascript">
+        load(1);
+        function next() {
+            current = current + 1;
+            load(current);
+            console.log("loading page " +current);
+        }
+        function prev() {
+            if (current > 0) {
+                current = current - 1;
+                load(current);
+                console.log("loading page " +current);
+            }
+        }
+    </script>
 }

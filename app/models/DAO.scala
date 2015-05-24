@@ -85,9 +85,9 @@ object DAO {
   }}
 
 
-  def updateTicket(ticketInfoWithId: TicketInfoWithId) = DB.db.withSession {implicit sx => {
+  def updateTicket(authorId: Long, ticketInfoWithId: TicketInfoWithId) = DB.db.withSession {implicit sx => {
     import Tables._
-    val q = for(ticket <- tickets.filter(_.id === ticketInfoWithId.ticketId)) yield ticket
+    val q = for(ticket <- tickets.filter(_.authorId === authorId).filter(_.id === ticketInfoWithId.ticketId).filter(_.status < 3)) yield ticket
     q.firstOption.map(ticket => {
       val status = ticketInfoWithId.assignedToId match {
         case Some(id) => 2
@@ -106,9 +106,29 @@ object DAO {
     }
   }}
 
-  def getTicket(ticketId: Long) = DB.db.withSession {implicit sx => {
+  def listTickets(page: Int = 1, pageSize: Int = 2): Seq[(String, String, String, Int, Long, String)] = {
+    DB.db.withSession {implicit sx => {
+      import Tables._
+      val q = for(user <- users;
+                  (ticket, customer) <-tickets.innerJoin(customers).on(_.customerId === _.id)) yield (user.email, ticket.name, ticket.desc, ticket.status,
+        ticket.id, customer.email)
+      val paged = Compiled((d: ConstColumn[Long], t: ConstColumn[Long]) => q.drop(d).take(t))
+      //val p = q.drop((page - 1)* pageSize).take(pageSize)
+      //val query = p.selectStatement
+      //println(query)
+      //p.list
+      paged((page - 1) * pageSize, pageSize).run
+    }}
+  }
+
+  def getMyTicket(authorId: Long, ticketId: Long) = DB.db.withSession {implicit sx => {
     import Tables._
-    val q = for(ticket <- tickets.filter(_.id === ticketId)) yield ticket
+    val q = for(ticket <- tickets.filter(_.id === ticketId).filter(_.authorId === authorId)) yield ticket
     q.firstOption
+  }}
+
+  def closeTicket(id: Long): Int = DB.db.withSession{ implicit sx => {
+    val q = for(ticket <- Tables.tickets.filter(_.id === id).filter(_.status > 1)) yield ticket.status
+    q.update(3)
   }}
 }

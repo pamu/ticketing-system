@@ -20,7 +20,9 @@ object Application extends Controller with Secured {
     Ok(Routes.javascriptRouter("jsRoutes")(
       controllers.routes.javascript.Application.newticketSubmit,
       controllers.routes.javascript.Application.editableTicket,
-      controllers.routes.javascript.Application.editticketSubmit
+      controllers.routes.javascript.Application.editticketSubmit,
+      controllers.routes.javascript.Application.listTickets,
+      controllers.routes.javascript.Application.closeTicket
     )).as(JAVASCRIPT)
   }
 
@@ -103,7 +105,7 @@ object Application extends Controller with Secured {
 
   def editableTicket(ticketId: Long) = withUser{user => implicit request =>
     scala.concurrent.blocking {
-      DAO.getTicket(ticketId) match {
+      DAO.getMyTicket(user.id.get, ticketId) match {
         case Some(ticket) => {
           if (ticket.status < 3) {
             val ticketInfo = TicketInfo(ticket.customerId, ticket.name, ticket.desc, ticket.assignedTo)
@@ -137,14 +139,14 @@ object Application extends Controller with Secured {
               data.assignedToId match {
                 case Some(id) => {
                   if (DAO.userExists(id)) {
-                    DAO.updateTicket(data)
+                    DAO.updateTicket(user.id.get, data)
                     Ok(Json.obj("success" -> "successfully updated."))
                   } else {
                     Ok(Json.obj("failure" -> "User does not exist."))
                   }
                 }
                 case None => {
-                  DAO.updateTicket(data)
+                  DAO.updateTicket(user.id.get, data)
                   Ok(Json.obj("success" -> "successfully updated."))
                 }
               }
@@ -159,4 +161,27 @@ object Application extends Controller with Secured {
       }
     }
   }
+
+  def listTickets(page: Int) = withUser {user => implicit request => {
+    implicit val listWrites: Writes[(String, String, String, Int, Long , String)] =
+      new Writes[(String, String, String, Int, Long, String)] {
+      override def writes(o: (String, String, String, Int, Long, String)): JsValue = {
+        Json.obj("userEmail" -> o._1, "heading" -> o._2, "desc" -> o._3, "status" -> o._4,
+          "id" -> o._5, "customerEmail" -> o._6)
+      }
+    }
+    if (page < 1) Ok(Json.obj("failure" -> "In valid page Id.")) else {
+      scala.concurrent.blocking {
+        val list = DAO.listTickets(page)
+        if (list.isEmpty) Ok(Json.obj("failure" -> "end of results.")) else Ok(Json.obj("success" -> Json.toJson(list)))
+      }
+    }
+  }}
+
+  def closeTicket(id: Long) = withUser { user => implicit request => {
+    scala.concurrent.blocking {
+      val status = DAO.closeTicket(id)
+      if (status > 0) Ok(Json.obj("success" -> "closed")) else Ok(Json.obj("failure" -> "operation failed."))
+    }
+  }}
 }

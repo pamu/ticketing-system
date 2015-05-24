@@ -19,7 +19,8 @@ POST    /newticketSubmit            controllers.Application.newticketSubmit()
 GET     /editticket/:ticketId       controllers.Application.editticket(ticketId: Long)
 POST    /editticketSubmit           controllers.Application.editticketSubmit()
 GET     /editableTicket             controllers.Application.editableTicket(ticketId: Long)
-
+GET     /listtickets                controllers.Application.listTickets(page: Int)
+GET     /closeticket                controllers.Application.closeTicket(ticketId: Long)
 
 
 # Map static resources from the /public folder to the /assets URL path
