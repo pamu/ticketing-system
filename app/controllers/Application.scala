@@ -210,7 +210,7 @@ object Application extends Controller with Secured {
               if (status > 0) Ok(Json.obj("success" -> "comment successfully posted.")) else
                 Ok(Json.obj("failure" -> "error posting comment"))
             } else {
-              Ok(Json.obj("failure" -> "Ticket does not exist."))
+              Ok(Json.obj("failure" -> "Ticket does not exist.(or ticket might be closed)"))
             }
           }
         }
@@ -229,7 +229,7 @@ object Application extends Controller with Secured {
     }
     scala.concurrent.blocking {
       val list = DAO.listComments(ticketId, page)
-      if (list.isEmpty) Ok(Json.obj("failure" -> "No comments")) else Ok(Json.obj("success" -> Json.toJson(list)))
+      if (list.isEmpty) Ok(Json.obj("failure" -> "No comments found.")) else Ok(Json.obj("success" -> Json.toJson(list)))
     }
   }}
 }

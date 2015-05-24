@@ -141,7 +141,7 @@ object DAO {
   }}
 
   def ticketExists(ticketId: Long): Boolean = DB.db.withSession {implicit sx => {
-    val q = for(ticket <- Tables.tickets.filter(_.id === ticketId)) yield ticket
+    val q = for(ticket <- Tables.tickets.filter(_.id === ticketId).filter(_.status < 3)) yield ticket
     q.exists.run
   }}
 
