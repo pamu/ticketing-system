@@ -109,8 +109,8 @@ object DAO {
   def listTickets(page: Int = 1, pageSize: Int = 2): Seq[(String, String, String, Int, Long, String)] = {
     DB.db.withSession {implicit sx => {
       import Tables._
-      val q = for(user <- users;
-                  (ticket, customer) <-tickets.innerJoin(customers).on(_.customerId === _.id)) yield (user.email, ticket.name, ticket.desc, ticket.status,
+      val q = for(((user, ticket), customer) <- users.innerJoin(tickets).on(_.id === _.authorId)
+        .innerJoin(customers).on(_._2.customerId === _.id)) yield (user.email, ticket.name, ticket.desc, ticket.status,
         ticket.id, customer.email)
       val paged = Compiled((d: ConstColumn[Long], t: ConstColumn[Long]) => q.drop(d).take(t))
       //val p = q.drop((page - 1)* pageSize).take(pageSize)

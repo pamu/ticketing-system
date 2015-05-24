@@ -17,7 +17,7 @@ function load(page) {
                         status = "close";
                         action = "closed";
                     }
-                    tags = tags + '<tr id="'+ list[i].id +'"> <th id="id"> ' + list[i].id+ '</th> <th id="heading">'+ list[i].heading+'</th> <th id="desc"> ' + list[i].desc + '</th> <th id="customerEmail"> ' + list[i].customerEmail + ' </th> <th id="userEmail"> ' + list[i].userEmail + '</th> <th id="status"> ' + status + '</th> <th id="edit"><a id="editButton" class="btn" href="/editticket/' + list[i].id + '">Edit</a></th> <th id="action" onclick="closeTicket(' + list[i].id + ');">' + action +'</th></tr>';
+                    tags = tags + '<tr id="'+ list[i].id +'"> <th id="id"> <a href="/ticket/' + list[i].id + '">' + list[i].id+ '</a></th> <th id="heading">'+ list[i].heading+'</th> <th id="desc"> ' + list[i].desc + '</th> <th id="customerEmail"> ' + list[i].customerEmail + ' </th> <th id="userEmail"> ' + list[i].userEmail + '</th> <th id="status"> ' + status + '</th> <th id="edit"><a id="editButton" class="btn" href="/editticket/' + list[i].id + '">Edit</a></th> <th id="action" onclick="closeTicket(' + list[i].id + ');">' + action +'</th></tr>';
                 }
                 var tb = $("#table_body").html(tags);
             }

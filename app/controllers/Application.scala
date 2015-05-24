@@ -111,10 +111,10 @@ object Application extends Controller with Secured {
             val ticketInfo = TicketInfo(ticket.customerId, ticket.name, ticket.desc, ticket.assignedTo)
             Ok(Json.obj("success" -> Json.toJson(ticketInfo)))
           } else {
-            Ok(Json.obj("failure" -> "Item Not editable"))
+            Ok(Json.obj("failure" -> "Item Not editable(Ticket Closed)."))
           }
         }
-        case None => Ok(Json.obj("failure" -> "ticket not found"))
+        case None => Ok(Json.obj("failure" -> "ticket not found.(One can only edit one's tickets)"))
       }
     }
   }
@@ -181,7 +181,11 @@ object Application extends Controller with Secured {
   def closeTicket(id: Long) = withUser { user => implicit request => {
     scala.concurrent.blocking {
       val status = DAO.closeTicket(id)
-      if (status > 0) Ok(Json.obj("success" -> "closed")) else Ok(Json.obj("failure" -> "operation failed."))
+      if (status > 0) Ok(Json.obj("success" -> "closed")) else Ok(Json.obj("failure" -> "operation failed.(ticket cannot be closed until it is assigned to someone)"))
     }
+  }}
+
+  def ticket(ticketId: Long) = withUser { user => implicit request => {
+    Ok(views.html.ticket())
   }}
 }
