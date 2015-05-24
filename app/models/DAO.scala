@@ -135,6 +135,13 @@ object DAO {
     q.firstOption
   }}
 
+  def getTicketAuthorIdAndHeading(ticketId: Long): Option[(Long, String)] = DB.db.withSession {implicit sx => {
+    import Tables._
+    val q = for(((ticket, user), customer) <- tickets.filter(_.id === ticketId).innerJoin(users).on(_.authorId === _.id)
+      .innerJoin(customers).on(_._1.customerId === _.id)) yield (user.id, ticket.name)
+    q.firstOption
+  }}
+
   def closeTicket(id: Long): Int = DB.db.withSession{ implicit sx => {
     val q = for(ticket <- Tables.tickets.filter(_.id === id).filter(_.status > 1)) yield ticket.status
     q.update(3)

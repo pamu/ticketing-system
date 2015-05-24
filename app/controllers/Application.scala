@@ -2,11 +2,16 @@ package controllers
 
 import java.sql.Timestamp
 
+import actors.NHandler
+import global.Global
 import models.DAO
 import models.DTO.Ticket
+import play.api.libs.EventSource
+import play.api.libs.iteratee.Enumerator
 import play.api.{Logger, Routes}
 import play.api.libs.json._
 import play.api.mvc.{Action, Controller}
+import utils.Utils
 
 import scala.concurrent.Future
 
@@ -206,6 +211,7 @@ object Application extends Controller with Secured {
           val data = success.get
           scala.concurrent.blocking {
             if (DAO.ticketExists(data.ticketId)) {
+              Utils.notify(user.id.get, user.email, data.ticketId)
               val status = DAO.saveComment(user.id.get, data)
               if (status > 0) Ok(Json.obj("success" -> "comment successfully posted.")) else
                 Ok(Json.obj("failure" -> "error posting comment"))
@@ -232,4 +238,21 @@ object Application extends Controller with Secured {
       if (list.isEmpty) Ok(Json.obj("failure" -> "No comments found.")) else Ok(Json.obj("success" -> Json.toJson(list)))
     }
   }}
+
+  import akka.pattern.ask
+  import akka.util.Timeout
+  import scala.concurrent.duration._
+  def notifications() = withFUser {user => implicit request => {
+    implicit val timeout = Timeout(5 seconds)
+    val f = (Global.nhandler ? NHandler.Stream).mapTo[Enumerator[JsValue]]
+    f.map(en => {
+      Ok.chunked(en &> NHandler.filter(user.id.get) &> EventSource()).as(EVENT_STREAM)
+    }).recover{case throwable: Throwable => BadRequest}
+  }}
+
+  def send() = Action {
+    Global.nhandler ! NHandler.Message(1, "hello")
+    Ok("sent")
+  }
+
 }

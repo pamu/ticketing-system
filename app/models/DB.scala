@@ -23,12 +23,13 @@ object DB {
   )
 
   //test database
+
   /*
   lazy val db = Database.forURL(
     url = "jdbc:mysql://localhost/ticksys",
     driver = "com.mysql.jdbc.Driver",
     user="root",
     password="root"
-  )
-  */
+  )*/
+
 }

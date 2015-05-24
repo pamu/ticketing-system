@@ -17,13 +17,20 @@ trait Secured {
   def withAuth(f: String => Request[AnyContent] => Result) = Security.Authenticated(email, onUnauthorized) { email =>
     Action.async(request => Future(f(email)(request)))
   }
+  def withFAuth(f: String => Request[AnyContent] => Future[Result]) = Security.Authenticated(email, onUnauthorized) { email =>
+    Action.async(request => f(email)(request))
+  }
   def withAsyncAuth[A](p: BodyParser[A])(f: String => Request[A] => Future[Result]) = Security.Authenticated(email, onUnauthorized) { email =>
     Action.async(p)(request => f(email)(request))
   }
-
   def withUser(f: User => Request[AnyContent] => Result) = withAuth { email => request =>
     scala.concurrent.blocking {
       DAO.getUser(email).map(user => f(user)(request)).getOrElse(onUnauthorized(request))
+    }
+  }
+  def withFUser(f: User => Request[AnyContent] => Future[Result]) = withFAuth { email => request =>
+    scala.concurrent.blocking {
+      DAO.getUser(email).map(user => f(user)(request)).getOrElse(Future(onUnauthorized(request)))
     }
   }
   def withAsyncUser[A](p: BodyParser[A])(f: User => Request[A] => Future[Result]) = withAsyncAuth(p) { email => request =>

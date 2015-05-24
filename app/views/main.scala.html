@@ -13,10 +13,11 @@
     <script type="text/javascript" src='@routes.Assets.at("js/tickets_loader.js")'></script>
     <script type="text/javascript" src='@routes.Assets.at("js/comment.js")'></script>
     <script type="text/javascript" src='@routes.Assets.at("js/comment_loader.js")'></script>
+    <script type="text/javascript" src='@routes.Assets.at("js/notifications.js")'></script>
     <style>
-    body {
-        margin-top: 50px;
-    }
+        body {
+            margin-top: 50px;
+        }
     </style>
 </head>
 <body>
@@ -35,6 +36,8 @@
         </div>
     </div>
     <div class="container">
+        <div class="row-fluid" id="notifications"></div>
+        <br/>
         @content
     </div>
 </body>
