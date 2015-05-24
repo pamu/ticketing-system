@@ -222,6 +222,14 @@ object Application extends Controller with Secured {
   }}
 
   def listComments(ticketId: Long, page: Int) = withUser {user => implicit request => {
-    Ok("")
+    implicit val writes: Writes[(String, String)] = new Writes[(String, String)] {
+      override def writes(o: (String, String)): JsValue = {
+        Json.obj("commenter" -> o._1, "comment" -> o._2)
+      }
+    }
+    scala.concurrent.blocking {
+      val list = DAO.listComments(ticketId, page)
+      if (list.isEmpty) Ok(Json.obj("failure" -> "No comments")) else Ok(Json.obj("success" -> Json.toJson(list)))
+    }
   }}
 }

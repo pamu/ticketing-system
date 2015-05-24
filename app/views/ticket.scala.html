@@ -39,5 +39,14 @@
         </div>
         <div id="comments">
         </div>
+        <button class="btn" onclick="more();">More</button>
     </div>
+    <script type="text/javascript">
+        var moreCounter = 1;
+        function more() {
+            moreCounter ++;
+            commentLoader(@{info._5}, moreCounter);
+        }
+        commentLoader(@{info._5}, 1)
+    </script>
 }

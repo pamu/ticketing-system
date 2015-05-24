@@ -2,8 +2,8 @@ package models
 
 import java.sql.Timestamp
 
-//import scala.slick.driver.PostgresDriver.simple._
-import scala.slick.driver.MySQLDriver.simple._
+import scala.slick.driver.PostgresDriver.simple._
+//import scala.slick.driver.MySQLDriver.simple._
 import models.DTO.{Comment, Customer, User, Ticket}
 
 /**
@@ -88,7 +88,7 @@ object Tables {
 
     def commenterIdFK = foreignKey("comments_commenter_id_fk", commenterId, TableQuery[Users])(_.id, ForeignKeyAction.Cascade, ForeignKeyAction.Cascade)
 
-    def ticketIdFK = foreignKey("comments_ticket_id_fk", ticketId, TableQuery[Users])(_.id, ForeignKeyAction.Cascade, ForeignKeyAction.Cascade)
+    def ticketIdFK = foreignKey("comments_ticket_id_fk", ticketId, TableQuery[Tickets])(_.id, ForeignKeyAction.Cascade, ForeignKeyAction.Cascade)
   }
 
   val users = TableQuery[Users]

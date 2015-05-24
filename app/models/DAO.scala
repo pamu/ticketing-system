@@ -9,9 +9,9 @@ import play.api.Logger
 
 import scala.slick.jdbc.meta.MTable
 
-//import scala.slick.driver.PostgresDriver.simple._
+import scala.slick.driver.PostgresDriver.simple._
 
-import scala.slick.driver.MySQLDriver.simple._
+//import scala.slick.driver.MySQLDriver.simple._
 
 /**
  * Created by pnagarjuna on 22/05/15.
@@ -147,5 +147,13 @@ object DAO {
 
   def saveComment(commenterId: Long, data: CommentInfo) = DB.db.withSession {implicit sx => {
     Tables.comments += Comment(commenterId, data.ticketId, data.comment, new Timestamp(new Date().getTime))
+  }}
+
+  def listComments(ticketId: Long, page: Int, pageSize: Int = 2): Seq[(String, String)] = DB.db.withSession {implicit sx => {
+    import Tables._
+    val q = for((comment, user) <- comments.filter(_.ticketId === ticketId).innerJoin(users)
+      .on(_.commenterId === _.id)) yield (user.email, comment.comment)
+    val paged = Compiled((d: ConstColumn[Long], t: ConstColumn[Long]) => q.drop(d).take(t))
+    paged((page - 1) * pageSize, pageSize).run
   }}
 }
