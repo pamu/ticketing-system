@@ -5,6 +5,8 @@ looks like heroku is down
 
 Added H2 (in memory SQL database)
 
+You can run the project on your local machine.
+
 To run the project
 
 In the project root directory run
