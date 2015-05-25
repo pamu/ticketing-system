@@ -22,6 +22,8 @@ now open
 
 if sbt is not installed download it from http://www.scala-sbt.org/download.html
 
+# Screen Shots of Ticketing system
+
 ### Login
 
 ![UI](https://raw.githubusercontent.com/pamu/ticketing-system/master/images/login.png)
