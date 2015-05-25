@@ -1,7 +1,9 @@
 # ticketing-system
 Ticketing System
 
-# http://ticksys.herokuapp.com/  Online version on Heroku
+# Online version on Heroku
+
+web app is running @ http://ticksys.herokuapp.com
 
 # offline version
 
