@@ -30,3 +30,7 @@ if sbt is not installed download it from http://www.scala-sbt.org/download.html
 ### Comments
 
 ![UI](https://raw.githubusercontent.com/pamu/ticketing-system/master/images/comments.png)
+
+### Notifications
+
+![UI](https://raw.githubusercontent.com/pamu/ticketing-system/master/images/notifications.png)
