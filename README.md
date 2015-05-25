@@ -1,18 +1,26 @@
 # ticketing-system
 Ticketing System
 
-## Login
+Go to the project root directory and run
+
+'''
+    sbt run
+'''
+
+if sbt is not installed download it from http://www.scala-sbt.org/download.html
+
+### Login
 
 ![UI](https://raw.githubusercontent.com/pamu/ticketing-system/master/images/login.png)
 
-## Home
+### Home
 
 ![UI](https://raw.githubusercontent.com/pamu/ticketing-system/master/images/home.png)
 
-## New Ticket
+### New Ticket
 
 ![UI](https://raw.githubusercontent.com/pamu/ticketing-system/master/images/newticket.png)
 
-## Comments
+### Comments
 
 ![UI](https://raw.githubusercontent.com/pamu/ticketing-system/master/images/comments.png)
