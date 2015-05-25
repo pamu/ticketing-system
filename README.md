@@ -13,6 +13,11 @@ In the project root directory run
     sbt run
 ```
 
+now open
+```
+    http://localhost:9000/
+```
+
 if sbt is not installed download it from http://www.scala-sbt.org/download.html
 
 ### Login
