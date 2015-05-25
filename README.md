@@ -9,9 +9,9 @@ To run the project
 
 In the project root directory run
 
-'''
+```
     sbt run
-'''
+```
 
 if sbt is not installed download it from http://www.scala-sbt.org/download.html
 
