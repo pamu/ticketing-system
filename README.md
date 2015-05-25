@@ -5,7 +5,7 @@ Ticketing System
 
 web app is running @ http://ticksys.herokuapp.com
 
-# offline version
+# Offline version
 
 Added H2 (in memory SQL database)
 
