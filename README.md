@@ -1,7 +1,9 @@
 # ticketing-system
 Ticketing System
 
-looks like heroku is down
+# http://ticksys.herokuapp.com/  Online version on Heroku
+
+# offline version
 
 Added H2 (in memory SQL database)
 
