@@ -11,7 +11,9 @@ import scala.slick.jdbc.meta.MTable
 
 //import scala.slick.driver.PostgresDriver.simple._
 
-import scala.slick.driver.MySQLDriver.simple._
+//import scala.slick.driver.MySQLDriver.simple._
+
+import scala.slick.driver.H2Driver.simple._
 
 /**
  * Created by pnagarjuna on 22/05/15.

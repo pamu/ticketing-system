@@ -3,7 +3,9 @@ package models
 import java.sql.Timestamp
 
 //import scala.slick.driver.PostgresDriver.simple._
-import scala.slick.driver.MySQLDriver.simple._
+//import scala.slick.driver.MySQLDriver.simple._
+import scala.slick.driver.H2Driver.simple._
+
 import models.DTO.{Comment, Customer, User, Ticket}
 
 /**
