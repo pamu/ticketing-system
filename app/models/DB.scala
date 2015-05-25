@@ -2,8 +2,8 @@ package models
 
 import java.net.URI
 
-import scala.slick.driver.PostgresDriver.simple._
-//import scala.slick.driver.MySQLDriver.simple._
+//import scala.slick.driver.PostgresDriver.simple._
+import scala.slick.driver.MySQLDriver.simple._
 
 /**
  * Created by pnagarjuna on 22/05/15.
@@ -15,21 +15,21 @@ object DB {
 
   val password = uri.getUserInfo.split(":")(1)
 
-
+  /*
   lazy val db = Database.forURL(
     driver = "org.postgresql.Driver",
     url = "jdbc:postgresql://" + uri.getHost + ":" + uri.getPort + uri.getPath, user = username,
     password = password
-  )
+  ) */
 
   //test database
 
-  /*
+
   lazy val db = Database.forURL(
     url = "jdbc:mysql://localhost/ticksys",
     driver = "com.mysql.jdbc.Driver",
     user="root",
     password="root"
-  )*/
+  )
 
 }
